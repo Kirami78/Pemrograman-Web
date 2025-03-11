@@ -1,60 +1,134 @@
-<html>
+<!DOCTYPE html>
+<html lang="id">
 <head>
-  <title> Pertemuan 2 HTML dasar</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pertemuan 2 - HTML Dasar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        header, footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+        main {
+            margin: 20px 0;
+        }
+        section {
+            background: white;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+        img {
+            display: block;
+            margin: auto;
+        }
+    </style>
 </head>
-  <body>
-    <header><a href="#"> Home </a></header>
-    <main> hi
-    </br>
-    </main id= "main" class="main">
-    <section> Halo World </section>
+<body>
+    <header>
+        <a href="#" style="color: white; text-decoration: none;">Home</a>
+    </header>
+    
+    <main>
+        <h1>Hi, Selamat Datang!</h1>
+    </main>
+    
+    <section>
+        <h2>Halo World</h2>
+    </section>
+    
     <section id="gambar">
-      <img src ="itam.webp" height ="100" width ="100">      
+        <img src="itam.webp" height="100" width="100" alt="Gambar contoh">
     </section>
     
     <section>
-      <from>
-        <label>Username:</label><input type="text">
-        <label>Password:</label><input type="password">
-        <label>Warna   :</label><input type="color">
-        <label>dropdown:</label>
-        <select>
-          <option>1</option>
-          <option>2</option>
-        </select>
-        <input type="submit" value="cancel">
-        <button> login</button>
-      </from>
+        <h2>Formulir</h2>
+        <form>
+            <label>Username:</label>
+            <input type="text"><br><br>
+            
+            <label>Password:</label>
+            <input type="password"><br><br>
+            
+            <label>Warna:</label>
+            <input type="color"><br><br>
+            
+            <label>Dropdown:</label>
+            <select>
+                <option>1</option>
+                <option>2</option>
+            </select><br><br>
+            
+            <label>Komentar:</label>
+            <textarea rows="4" cols="30" placeholder="Tambahkan komentar..."></textarea><br><br>
+            
+            <label>Tanggal:</label>
+            <input type="date"><br><br>
+            
+            <label>Upload File:</label>
+            <input type="file"><br><br>
+            
+            <input type="submit" value="Cancel">
+            <button type="submit">Login</button>
+        </form>
     </section>
     
-    <section id = "paragraf">
-      <p>
-      <h1> Pertemuan 200 </h1>
-      <h2> Html dasar </h2>
-        Pertemuan dasar membuat paragraf <br/> sederhana dengan huruf <i>miring</i><b>tebal</b>
-      </p>
-      <ul>
-        <li>1</li>
-        <li>2</li>
-      </ul>
-      <ol>
-        <li>1</li>
-        <li>2</li>
-      </ol>
+    <section id="paragraf">
+        <h1>Pertemuan 200</h1>
+        <h2>HTML Dasar</h2>
+        <p>Pertemuan dasar membuat paragraf sederhana dengan huruf <i>miring</i> dan <b>tebal</b>.</p>
+        <ul>
+            <li>Item 1</li>
+            <li>Item 2</li>
+        </ul>
+        <ol>
+            <li>Item 1</li>
+            <li>Item 2</li>
+        </ol>
     </section>
-
+    
     <section>
-      <h2> table</h2>
-    <table border = "1">
-      <thead>
-        <tr><th>jan</th><th>feb</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>1</td><td>2</td></tr>
-        <tr><td>3</td><td>4</td></tr>
-      </tbody>
-    </table>
+        <h2>Tabel</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Jan</th>
+                    <th>Feb</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>4</td>
+                </tr>
+            </tbody>
+        </table>
     </section>
-    <footer>@2025</footer>
-  </body>
+    
+    <footer>
+        &copy; 2025 Pertemuan 2 - HTML Dasar
+    </footer>
+</body>
 </html>
