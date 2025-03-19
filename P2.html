@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pertemuan 2 - HTML Dasar</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
+            letter-spacing: 0.5px;
+        }
+        section {
+            border: 1px solid rgb(77, 11, 158);
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        input {
+            padding: 5px;
+            width: 50%;
+            background: rgb(68, 7, 148);
+        }
+        #username {
+            background: green;
+        }
+        .bg-grey {
+            background: grey;
+        }
+        button {
+            width: 80px;
+            height: 35px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+        @media screen and (max-width: 700px) {
+            [class*="col-"] {
+                width: 50%;
+            }
+        }
+        @media screen and (max-width: 450px) {
+            [class*="col-"] {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header align="center">
+        <h1>Pertemuan 2 - HTML Dasar</h1>
+        <a href="#">Home</a>
+        <hr>
+    </header>
+
+    <main align="center">
+        <h2>Hi, Selamat datang!</h2>
+    </main>
+
+    <section align="center">
+        <h2>🌍 Halo Dunia!</h2>
+    </section>
+
+    <section align="center">
+        <h2>🖼️ Gambar</h2>
+        <img src="WP.jpeg" alt="Gambar WP" height="100" width="100">
+    </section>
+
+    <section>
+        <h2>📝 Formulir</h2>
+        <form>
+            <label>Username:</label>
+            <input type="text" style="width: 200px; height: 30px;"><br><br>
+
+            <label>Password:</label>
+            <input type="password" style="width: 200px; height: 30px;">
+            <button>Login</button><br><br>
+
+            <label>Pilih Warna:</label>
+            <input type="color"><br><br>
+
+            <label>Dropdown:</label>
+            <select>
+                <option>1</option>
+                <option>2</option>
+            </select><br><br>
+
+            <label>Komentar:</label><br>
+            <textarea rows="4" cols="30" placeholder="Tambahkan komentar..."></textarea><br><br>
+
+            <label>Tanggal:</label>
+            <input type="date"><br><br>
+
+            <label>Upload File:</label>
+            <input type="file"><br><br>
+
+            <input type="submit" value="Cancel">
+        </form>
+    </section>
+
+    <section>
+        <h2>📖 Pertemuan 200</h2>
+        <h3>📌 HTML Dasar</h3>
+        <p>Ini adalah contoh paragraf dengan tulisan <i>miring</i>, <b>tebal</b>.</p>
+
+        <h3>📌 List:</h3>
+        <ul>
+            <li>Item 1 ✅</li>
+            <li>Item 2 ❌</li>
+        </ul>
+
+        <ol>
+            <li>Pertama 🥇</li>
+            <li>Kedua 🥈</li>
+        </ol>
+    </section>
+
+    <section>
+        <h2>📊 Tabel</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>📅 Jan</th>
+                    <th>📅 Feb</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1️⃣</td>
+                    <td>2️⃣</td>
+                </tr>
+                <tr>
+                    <td>3️⃣</td>
+                    <td>4️⃣</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <footer align="center">
+        <p>&copy; 2025 - Dibuat dengan ❤️</p>
+    </footer>
+
+</body>
+</html>
