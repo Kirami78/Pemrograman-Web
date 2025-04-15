@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript & DOM (Document Object Model)</title>
+    <style>
+        body { font-family: 'Times New Roman', sans-serif; margin: 20px; padding: 0; }
+        h1 { color: #a41414; }
+        .box { width: 100px; height: 100px; background-color: #b220c9; margin: 10px; }
+        button { padding: 10px 20px; border: none; background-color: #07e137; color: white; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>JavaScript & DOM (Document Object Model)</h1>
+    <hr>
+    <p>
+        Contoh manipulasi DOM dengan JavaScript:
+    </p>
+    <p>Disini saya merubah warna menjadi ungu menjadi pink</p>
+    <div class="box" id="colorBox"></div>
+    <button onclick="changeColor()">Coba tekan</button>
+    <hr>
+    <p>Nah dibagian ini saya coba buat sebuah kotak yang jika ditekan tombolnya maka akan berubah bentuk</p>
+    <p>dari kotak menjadi segitiga</p>
+    <div id="bentuk" style="width: 100px; height: 100px; background-color: crimson; transition: all 0.3s;"></div>
+    <br>
+    <button onclick="changeShape()">Tekan dong</button>
+
+    <script>
+        let segitiga = false;
+        // Seleksi elemen DOM dan event handling
+        function changeColor() {
+            const box = document.getElementById('colorBox');
+            box.style.backgroundColor = box.style.backgroundColor === 'pink' ? '#b220c9' : 'pink';
+        }
+        function changeShape(){
+            const bentuk = document.getElementById('bentuk');
+            if (!segitiga) {
+                // ubah ke segitiga
+                bentuk.style.width = '0';
+                bentuk.style.height = '0';
+                bentuk.style.backgroundColor = 'transparent';
+                bentuk.style.borderLeft = '50px solid transparent';
+                bentuk.style.borderRight = '50px solid transparent';
+                bentuk.style.borderBottom = '100px solid orange';
+            } else {
+                // ubah balik ke kotak
+                bentuk.style.width = '100px';
+                bentuk.style.height = '100px';
+                bentuk.style.backgroundColor = 'crimson';
+                bentuk.style.border = 'none';
+            }
+            segitiga = !segitiga;
+        }
+    </script>
+</body>
+</html>
