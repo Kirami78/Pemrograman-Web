@@ -7,51 +7,82 @@
     <style>
         body { font-family: 'Times New Roman', sans-serif; margin: 20px; padding: 0; }
         h1 { color: #a41414; }
-        .box { width: 100px; height: 100px; background-color: #b220c9; margin: 10px; }
+        .box { width: 100px; height: 100px; background-color: #b220c9; margin: 10px; transition: all 0.4s ease; }
         button { padding: 10px 20px; border: none; background-color: #07e137; color: white; cursor: pointer; }
+        #bentuk { transition: all 0.4s ease; }
     </style>
 </head>
 <body>
     <h1>JavaScript & DOM (Document Object Model)</h1>
     <hr>
-    <p>
-        Contoh manipulasi DOM dengan JavaScript:
-    </p>
+    <p>Contoh manipulasi DOM dengan JavaScript:</p>
     <p>Disini saya merubah warna menjadi ungu menjadi pink</p>
     <div class="box" id="colorBox"></div>
     <button onclick="changeColor()">Coba tekan</button>
     <hr>
-    <p>Nah dibagian ini saya coba buat sebuah kotak yang jika ditekan tombolnya maka akan berubah bentuk</p>
-    <p>dari kotak menjadi segitiga</p>
-    <div id="bentuk" style="width: 100px; height: 100px; background-color: crimson; transition: all 0.3s;"></div>
+    <p>Nah dibagian ini saya coba buat sebuah kotak yang jika</p>
+    <p>ditekan tombolnya maka akan berubah bentuk dari kotak menjadi segitiga</p>
+    <div id="bentuk" style="width: 100px; height: 100px; background-color: crimson;"></div>
     <br>
     <button onclick="changeShape()">Tekan dong</button>
 
     <script>
-        let segitiga = false;
-        // Seleksi elemen DOM dan event handling
+        // === WARNA ===
+        const colors = ['pink', '#b220c9', 'cyan', 'orange', 'lime', 'yellow', 'skyblue'];
+        let colorIndex = 0;
+
         function changeColor() {
             const box = document.getElementById('colorBox');
-            box.style.backgroundColor = box.style.backgroundColor === 'pink' ? '#b220c9' : 'pink';
+            colorIndex = (colorIndex + 1) % colors.length;
+            box.style.backgroundColor = colors[colorIndex];
         }
-        function changeShape(){
+
+        // === BENTUK ===
+        let bentukIndex = 0;
+
+        function resetShapeStyle(bentuk) {
+            bentuk.style.width = '100px';
+            bentuk.style.height = '100px';
+            bentuk.style.backgroundColor = 'crimson';
+            bentuk.style.border = 'none';
+            bentuk.style.borderRadius = '0';
+            bentuk.style.borderLeft = 'none';
+            bentuk.style.borderRight = 'none';
+            bentuk.style.borderBottom = 'none';
+            bentuk.style.clipPath = 'none';
+        }
+
+        function changeShape() {
             const bentuk = document.getElementById('bentuk');
-            if (!segitiga) {
-                // ubah ke segitiga
-                bentuk.style.width = '0';
-                bentuk.style.height = '0';
-                bentuk.style.backgroundColor = 'transparent';
-                bentuk.style.borderLeft = '50px solid transparent';
-                bentuk.style.borderRight = '50px solid transparent';
-                bentuk.style.borderBottom = '100px solid orange';
-            } else {
-                // ubah balik ke kotak
-                bentuk.style.width = '100px';
-                bentuk.style.height = '100px';
-                bentuk.style.backgroundColor = 'crimson';
-                bentuk.style.border = 'none';
+            resetShapeStyle(bentuk);
+
+            switch (bentukIndex) {
+                case 0: // Kotak
+                    // default kotak
+                    break;
+                case 1: // Lingkaran
+                    bentuk.style.borderRadius = '50%';
+                    bentuk.style.backgroundColor = 'purple'
+                    break;
+                case 2: // Segitiga
+                    bentuk.style.width = '0';
+                    bentuk.style.height = '0';
+                    bentuk.style.backgroundColor = 'transparent';
+                    bentuk.style.borderLeft = '50px solid transparent';
+                    bentuk.style.borderRight = '50px solid transparent';
+                    bentuk.style.borderBottom = '100px solid orange';
+                    break;
+                case 3: // Trapesium
+                    bentuk.style.clipPath = 'polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)';
+                    bentuk.style.backgroundColor = 'cyan'
+                    break;
+                case 4: // Jajargenjang
+                    bentuk.style.clipPath = 'polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)';
+                    bentuk.style.backgroundColor = 'green'
+                    break;
             }
-            segitiga = !segitiga;
+
+            bentukIndex = (bentukIndex + 1) % 5;
         }
     </script>
 </body>
