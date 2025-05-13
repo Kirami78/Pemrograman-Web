@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Salam, Produk, dan Belanja</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background-color: #f5f5f5;
+    }
+    h1, h2 {
+      color: #333;
+    }
+    .section {
+      background: white;
+      padding: 20px;
+      margin-bottom: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      max-width: 600px;
+    }
+    button {
+      margin-left: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="section">
+    <h1 id="salam">Selamat datang, Mahasiswa!</h1>
+  </div>
+
+  <div class="section">
+    <h2>Produk Kami</h2>
+    <ul id="daftar-produk"></ul>
+  </div>
+
+  <div class="section">
+    <h2>Ringkasan Belanja</h2>
+    <ul id="ringkasan-belanja"></ul>
+    <p><strong id="total-belanja">Total Belanja: Rp0</strong></p>
+  </div>
+
+  <h1>📝 Todo List</h1>
+  <div class="section">
+    <input type="text" id="todo-input" placeholder="Tulis todo baru...">
+    <button id="add-button">Tambah</button>
+    <ul id="todo-list"></ul>
+  </div>
+
+  <script type="module">
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+    // 🔗 Supabase Link kamu
+    const supabaseUrl = "https://zmgbrbkzzzrxmkpfhmrg.supabase.co";
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptZ2JyYmt6enpyeG1rcGZobXJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcxMTgzMjEsImV4cCI6MjA2MjY5NDMyMX0.ajHByYgE0jRHqdfGqm8WIGV-aiibG-tVhnewimbC3gA";
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    // 🕒 Salam berdasarkan waktu
+    const now = new Date();
+    const hour = now.getHours();
+    let salam = "Selamat Malam";
+    if (hour >= 5 && hour < 12) {
+      salam = "Selamat Pagi";
+    } else if (hour >= 12 && hour < 18) {
+      salam = "Selamat Siang";
+    } else if (hour >= 18 && hour < 21) {
+      salam = "Selamat Sore";
+    }
+    document.getElementById("salam").textContent = salam + ", Mahasiswa!";
+
+    // 🛒 Produk
+    const produk = [
+      { nama: "Buku Tulis", harga: 5000 },
+      { nama: "Pulpen", harga: 3000 }
+    ];
+
+    const daftarProduk = document.getElementById("daftar-produk");
+    produk.forEach(p => {
+      const li = document.createElement("li");
+      li.textContent = `${p.nama} - Rp${p.harga.toLocaleString()}`;
+      daftarProduk.appendChild(li);
+    });
+
+    // 🧾 Ringkasan Belanja
+    const keranjang = [
+      { nama: "Buku Tulis", jumlah: 2, harga: 5000 },
+      { nama: "Pulpen", jumlah: 3, harga: 3000 }
+    ];
+
+    const ringkasanBelanja = document.getElementById("ringkasan-belanja");
+    const totalBelanjaEl = document.getElementById("total-belanja");
+    let total = 0;
+
+    keranjang.forEach(item => {
+      const li = document.createElement("li");
+      li.textContent = `${item.jumlah} x ${item.nama} @ Rp${item.harga.toLocaleString()}`;
+      ringkasanBelanja.appendChild(li);
+      total += item.jumlah * item.harga;
+    });
+
+    totalBelanjaEl.textContent = `Total Belanja: Rp${total.toLocaleString()}`;
+
+    // ✅ Todo List dengan Supabase
+    const input = document.getElementById("todo-input");
+    const addButton = document.getElementById("add-button");
+    const todoList = document.getElementById("todo-list");
+
+    async function loadTodos() {
+      const { data, error } = await supabase
+        .from("todos")
+        .select("*")
+        .order("id", { ascending: false });
+
+      if (error) {
+        alert("Gagal memuat todo: " + error.message);
+        return;
+      }
+
+      todoList.innerHTML = "";
+      data.forEach(todo => {
+        const li = document.createElement("li");
+
+        const span = document.createElement("span");
+        span.textContent = `${todo.title} ${todo.is_complete ? "✅" : ""}`;
+
+        const toggleBtn = document.createElement("button");
+        toggleBtn.textContent = todo.is_complete ? "Batal" : "Selesai";
+        toggleBtn.onclick = async () => {
+          await supabase.from("todos").update({ is_complete: !todo.is_complete }).eq("id", todo.id);
+          loadTodos();
+        };
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Hapus";
+        deleteBtn.onclick = async () => {
+          await supabase.from("todos").delete().eq("id", todo.id);
+          loadTodos();
+        };
+
+        li.appendChild(span);
+        li.appendChild(toggleBtn);
+        li.appendChild(deleteBtn);
+        todoList.appendChild(li);
+      });
+    }
+
+    async function addTodo() {
+      const title = input.value.trim();
+      if (!title) {
+        alert("Todo tidak boleh kosong!");
+        return;
+      }
+
+      const { error } = await supabase.from("todos").insert([{ title }]);
+      if (error) {
+        alert("Gagal menambahkan todo: " + error.message);
+        return;
+      }
+
+      input.value = "";
+      loadTodos();
+    }
+
+    addButton.addEventListener("click", addTodo);
+    loadTodos();
+  </script>
+</body>
+</html>
