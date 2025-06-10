@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CRUD Sederhana Supabase - Prosedural</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 20px; }
+  #crudForm { display: none; border: 1px solid #ccc; padding: 15px; width: 300px; margin-top: 15px; }
+  table { border-collapse: collapse; width: 100%; margin-top: 15px; }
+  th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+  tr:hover { background-color: #f9f9f9; cursor: pointer; }
+  button { margin-right: 10px; }
+  #addBtn { margin-bottom: 15px; }
+</style>
+</head>
+<body>
+
+<h2>CRUD Sederhana dengan Supabase</h2>
+<button id="addBtn">Tambah</button>
+
+<table>
+  <thead>
+    <tr><th>ID</th><th>Judul</th><th>Isi</th></tr>
+  </thead>
+  <tbody id="dataBody"></tbody>
+</table>
+
+<form id="crudForm">
+  <input type="hidden" id="recordId" />
+  <div>
+    <label for="nameInput">Judul:</label><br/>
+    <input type="text" id="nameInput" required />
+  </div>
+  <div style="margin-top:8px;">
+    <label for="emailInput">Isi:</label><br/>
+    <textarea id="emailInput"> </textarea>
+    <!-- <input type="email" id="emailInput" required /> -->
+  </div>
+  <div style="margin-top:15px;">
+    <button type="submit">Simpan</button>
+    <button type="button" id="deleteBtn">Hapus</button>
+    <button type="button" id="cancelBtn">Batal</button>
+  </div>
+</form>
+
+<script type="module">
+// Import Supabase client dari CDN
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+
+const SUPABASE_URL = 'https://zligkbkrxqqbetnwykrq.supabase.co'
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpsaWdrYmtyeHFxYmV0bnd5a3JxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkyNjM2ODUsImV4cCI6MjA2NDgzOTY4NX0.kDK8_c6qCKKRax4HbHwEbAMwTavhDRWdgqkDtjWWYD8'
+
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+
+// Elemen DOM
+const addBtn = document.getElementById('addBtn')
+const dataBody = document.getElementById('dataBody')
+const crudForm = document.getElementById('crudForm')
+const recordIdInput = document.getElementById('recordId')
+const nameInput = document.getElementById('nameInput')
+const emailInput = document.getElementById('emailInput')
+const deleteBtn = document.getElementById('deleteBtn')
+const cancelBtn = document.getElementById('cancelBtn')
+
+// Fungsi load data ke tabel
+async function loadData() {
+  const { data, error } = await supabase.from('web').select('*').order('id')
+  if (error) {
+    alert('Error loading data: ' + error.message)
+    return
+  }
+  dataBody.innerHTML = ''
+  data.forEach(row => {
+    const tr = document.createElement('tr')
+    tr.dataset.id = row.id
+    tr.innerHTML = `<td>${row.id}</td><td>${row.judul}</td><td>${row.isi}</td>`
+    tr.addEventListener('click', () => showForm(row))
+    dataBody.appendChild(tr)
+  })
+}
+
+// Tampilkan form, isi dengan data jika ada
+function showForm(data = null) {
+  if (data) {
+    recordIdInput.value = data.id
+    nameInput.value = data.judul
+    emailInput.value = data.isi
+    deleteBtn.style.display = 'inline-block'
+  } else {
+    recordIdInput.value = ''
+    crudForm.reset()
+    deleteBtn.style.display = 'none'
+  }
+  crudForm.style.display = 'block'
+  nameInput.focus()
+}
+
+// Sembunyikan form
+function hideForm() {
+  crudForm.style.display = 'none'
+  recordIdInput.value = ''
+  crudForm.reset()
+}
+
+// Simpan data (insert/update)
+async function saveData(e) {
+  e.preventDefault()
+  const id = recordIdInput.value
+  const judul = nameInput.value.trim()
+  const isi = emailInput.value.trim()
+
+  if (!judul || !isi) {
+    alert('Nama dan Email harus diisi!')
+    return
+  }
+
+  if (id) {
+    // Update
+    const { error } = await supabase.from('web').update({ judul, isi }).eq('id', id)
+    if (error) return alert('Error update: ' + error.message)
+  } else {
+    // Insert
+    const { error } = await supabase.from('web').insert([{ judul, isi }])
+    if (error) return alert('Error insert: ' + error.message)
+  }
+
+  hideForm()
+  loadData()
+}
+
+// Hapus data
+async function deleteData() {
+  const id = recordIdInput.value
+  if (!id) return
+  if (!confirm('Yakin ingin menghapus data ini?')) return
+
+  const { error } = await supabase.from('web').delete().eq('id', id)
+  if (error) return alert('Error hapus: ' + error.message)
+
+  hideForm()
+  loadData()
+}
+
+// Event listeners
+addBtn.addEventListener('click', () => showForm(null))
+crudForm.addEventListener('submit', saveData)
+deleteBtn.addEventListener('click', deleteData)
+cancelBtn.addEventListener('click', hideForm)
+
+// Load data saat halaman siap
+window.addEventListener('DOMContentLoaded', loadData)
+
+</script>
+
+</body>
+</html>
