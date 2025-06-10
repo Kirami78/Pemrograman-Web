@@ -68,7 +68,7 @@ const content = document.getElementById('content')
 
 // Fungsi load data ke tabel
 async function loadData() {
-  const { data, error } = await supabase.from('web').select('*').order('id')
+  const { data, error } = await supabase.from('Web').select('*').order('id')
   if (error) {
     alert('Error loading data: ' + error.message)
     return
