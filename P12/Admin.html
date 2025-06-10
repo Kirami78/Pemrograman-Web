@@ -49,8 +49,8 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
 
-const SUPABASE_URL = 'https://zligkbkrxqqbetnwykrq.supabase.co'
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpsaWdrYmtyeHFxYmV0bnd5a3JxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkyNjM2ODUsImV4cCI6MjA2NDgzOTY4NX0.kDK8_c6qCKKRax4HbHwEbAMwTavhDRWdgqkDtjWWYD8'
+const SUPABASE_URL = 'https://zmgbrbkzzzrxmkpfhmrg.supabase.co'
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptZ2JyYmt6enpyeG1rcGZobXJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcxMTgzMjEsImV4cCI6MjA2MjY5NDMyMX0.ajHByYgE0jRHqdfGqm8WIGV-aiibG-tVhnewimbC3gA'
 
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
@@ -67,7 +67,7 @@ const cancelBtn = document.getElementById('cancelBtn')
 
 // Fungsi load data ke tabel
 async function loadData() {
-  const { data, error } = await supabase.from('web').select('*').order('id')
+  const { data, error } = await supabase.from('Web').select('*').order('id')
   if (error) {
     alert('Error loading data: ' + error.message)
     return
@@ -76,7 +76,7 @@ async function loadData() {
   data.forEach(row => {
     const tr = document.createElement('tr')
     tr.dataset.id = row.id
-    tr.innerHTML = `<td>${row.id}</td><td>${row.judul}</td><td>${row.isi}</td>`
+    tr.innerHTML = `<td>${row.id}</td><td>${row.Judul}</td><td>${row.Isi}</td>`
     tr.addEventListener('click', () => showForm(row))
     dataBody.appendChild(tr)
   })
@@ -86,8 +86,8 @@ async function loadData() {
 function showForm(data = null) {
   if (data) {
     recordIdInput.value = data.id
-    nameInput.value = data.judul
-    emailInput.value = data.isi
+    nameInput.value = data.Judul
+    emailInput.value = data.Isi
     deleteBtn.style.display = 'inline-block'
   } else {
     recordIdInput.value = ''
@@ -109,21 +109,21 @@ function hideForm() {
 async function saveData(e) {
   e.preventDefault()
   const id = recordIdInput.value
-  const judul = nameInput.value.trim()
-  const isi = emailInput.value.trim()
+  const Judul = nameInput.value.trim()
+  const Isi = emailInput.value.trim()
 
-  if (!judul || !isi) {
+  if (!Judul || !Isi) {
     alert('Nama dan Email harus diisi!')
     return
   }
 
   if (id) {
     // Update
-    const { error } = await supabase.from('web').update({ judul, isi }).eq('id', id)
+    const { error } = await supabase.from('Web').update({ Judul, Isi }).eq('id', id)
     if (error) return alert('Error update: ' + error.message)
   } else {
     // Insert
-    const { error } = await supabase.from('web').insert([{ judul, isi }])
+    const { error } = await supabase.from('Web').insert([{ Judul, Isi }])
     if (error) return alert('Error insert: ' + error.message)
   }
 
@@ -137,7 +137,7 @@ async function deleteData() {
   if (!id) return
   if (!confirm('Yakin ingin menghapus data ini?')) return
 
-  const { error } = await supabase.from('web').delete().eq('id', id)
+  const { error } = await supabase.from('Web').delete().eq('id', id)
   if (error) return alert('Error hapus: ' + error.message)
 
   hideForm()
