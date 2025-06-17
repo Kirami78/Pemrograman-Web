@@ -1,0 +1,63 @@
+/* Style buat halaman login */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to right, #00c2ff, #0077ff);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-box {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  width: 320px;
+}
+
+.login-box h2 {
+  margin-bottom: 20px;
+  color: #0077ff;
+  text-align: center;
+}
+
+.login-box label {
+  display: block;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.login-box input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 4px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.login-box button {
+  width: 100%;
+  background: #0077ff;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.login-box button:hover {
+  background: #005fcc;
+}
+
+@media (max-width: 500px) {
+  .login-box {
+    width: 90%;
+  }
+}
