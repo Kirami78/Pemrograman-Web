@@ -1,63 +1,171 @@
-/* Style buat halaman login */
-body {
+/* General Reset */
+* {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(to right, #00c2ff, #0077ff);
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  font-family: 'Segoe UI', sans-serif;
 }
 
+/* Body */
+body {
+  background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Login Box */
 .login-box {
-  background: white;
-  padding: 30px;
+  background-color: #ffffff;
+  padding: 40px 30px;
   border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-  width: 320px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
 }
 
 .login-box h2 {
   margin-bottom: 20px;
-  color: #0077ff;
-  text-align: center;
+  color: #333;
+  font-size: 26px;
 }
 
 .login-box label {
   display: block;
-  margin-bottom: 10px;
-  color: #333;
+  text-align: left;
+  margin: 10px 0 5px;
+  font-weight: 500;
+  color: #444;
 }
 
 .login-box input {
   width: 100%;
-  padding: 10px;
-  margin-top: 4px;
-  margin-bottom: 16px;
-  border-radius: 8px;
+  padding: 12px;
+  border-radius: 10px;
   border: 1px solid #ccc;
-  font-size: 14px;
+  margin-bottom: 16px;
+  transition: 0.2s ease;
+}
+
+.login-box input:focus {
+  border-color: #5e9cff;
+  outline: none;
 }
 
 .login-box button {
   width: 100%;
-  background: #0077ff;
+  padding: 12px;
+  background-color: #5e9cff;
   color: white;
   border: none;
-  padding: 12px;
-  border-radius: 8px;
-  font-size: 16px;
+  border-radius: 10px;
+  font-weight: bold;
   cursor: pointer;
-  transition: 0.3s;
+  font-size: 16px;
+  transition: 0.3s ease;
 }
 
 .login-box button:hover {
-  background: #005fcc;
+  background-color: #3b7dd8;
 }
 
-@media (max-width: 500px) {
-  .login-box {
-    width: 90%;
+/* Supa / Profile Style */
+.profile-container {
+  width: 100%;
+  max-width: 800px;
+  background-color: #fff;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+}
+
+.header-bg {
+  height: 150px;
+  background: linear-gradient(135deg, #00c9ff, #92fe9d);
+  border-radius: 15px 15px 0 0;
+}
+
+.profile-photo-wrapper {
+  margin-top: -60px;
+  text-align: center;
+}
+
+.profile-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 5px solid white;
+  object-fit: cover;
+}
+
+.header-text {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.header-text h1 {
+  font-size: 28px;
+  color: #333;
+}
+
+.header-text .subtitle {
+  color: #777;
+  margin-top: 5px;
+}
+
+.action-buttons {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.action-buttons button {
+  padding: 10px 20px;
+  margin: 5px;
+  background-color: #5e9cff;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.action-buttons button:hover {
+  background-color: #3b7dd8;
+}
+
+.content-card {
+  margin-top: 25px;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+}
+
+.content-card h2 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.content-card p {
+  color: #555;
+}
+
+ul {
+  padding-left: 20px;
+  margin-top: 10px;
+}
+
+ul li {
+  margin-bottom: 6px;
+  color: #444;
+}
+
+@media (max-width: 600px) {
+  .profile-container, .login-box {
+    padding: 20px;
   }
 }
