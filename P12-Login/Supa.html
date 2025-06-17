@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -24,7 +24,7 @@
     <button id="logoutBtn">Logout</button>
   </div>
 
-  <div id="content"></div>
+  <div id="content"><p>Memuat data...</p></div>
 
   <div class="content-card">
     <h3>Sosial Media</h3>
@@ -36,49 +36,57 @@
 </div>
 
 <script type="module">
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
-const supabase = createClient('https://zmgbrbkzzzrxmkpfhmrg.supabase.co', 'eyJhbGciOi...')
+  const supabase = createClient(
+    'https://zmgbrbkzzzrxmkpfhmrg.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptZ2JyYmt6enpyeG1rcGZobXJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcxMTgzMjEsImV4cCI6MjA2MjY5NDMyMX0.ajHByYgE0jRHqdfGqm8WIGV-aiibG-tVhnewimbC3gA'
+  );
 
-const content = document.getElementById('content')
+  const content = document.getElementById('content');
 
-document.getElementById('logoutBtn').addEventListener('click', async () => {
-  await supabase.auth.signOut()
-  // Redirect ke halaman login
-  window.location.href = 'Index.html'
-})
+  // Tombol logout
+  document.getElementById('logoutBtn').addEventListener('click', async () => {
+    await supabase.auth.signOut();
+    window.location.href = 'Index.html';
+  });
 
-window.addEventListener('DOMContentLoaded', async () => {
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) {
-    window.location.href = 'Index.html'
-    return
+  // Cek login dan load data
+  window.addEventListener('DOMContentLoaded', async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+
+    if (!session || !session.user) {
+      window.location.href = 'Index.html';
+      return;
+    }
+
+    // Load data setelah login
+    loadData();
+  });
+
+  // Ambil data dari Supabase
+  async function loadData() {
+    const { data, error } = await supabase
+      .from('Web')
+      .select('*')
+      .order('id');
+
+    if (error) {
+      content.innerHTML = `<p>Gagal memuat data: ${error.message}</p>`;
+      return;
+    }
+
+    let out = '';
+    data.forEach(row => {
+      out += `
+        <div class="content-card">
+          <h2>${row.Judul}</h2>
+          <p>${row.Isi}</p>
+        </div>
+      `;
+    });
+    content.innerHTML = out || '<p>Belum ada data untuk ditampilkan.</p>';
   }
-  loadData()
-})
-
-async function loadData() {
-  const { data, error } = await supabase
-    .from('Web')
-    .select('*')
-    .order('id')
-
-  if (error) {
-    alert('Error loading data: ' + error.message)
-    return
-  }
-
-  let out = ''
-  data.forEach(row => {
-    out += `
-      <div class="content-card">
-        <h2>${row.Judul}</h2>
-        <p>${row.Isi}</p>
-      </div>
-    `
-  })
-  content.innerHTML = out
-}
 </script>
 </body>
 </html>
