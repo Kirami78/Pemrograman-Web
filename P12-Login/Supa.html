@@ -14,18 +14,14 @@
     <img src="profile.png" alt="profile" class="profile-photo" />
   </div>
   <div class="header-text">
-    <h1>Tanzil Kirami</h1></h1>
+    <h1>Tanzil Kirami</h1>
     <p class="subtitle">They/Them Cencorang Aceh</p>
     <p>Aceh Selatan, Indonesia • <a href="https://wawan.sismadi.com">wawan.sismadi.com</a></p>
     <p><strong>Kirami Langit Polusi</strong> — Universitas Abdul Ghani</p>
   </div>
 
   <div class="action-buttons">
-
-
-    <button id="loginBtn">Login untuk akses data</button>
-<button id="logoutBtn">Logout</button>
-
+    <button id="logoutBtn">Logout</button>
   </div>
 
   <div id="content"></div>
@@ -42,39 +38,26 @@
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
-const SUPABASE_URL = 'https://zmgbrbkzzzrxmkpfhmrg.supabase.co'
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptZ2JyYmt6enpyeG1rcGZobXJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcxMTgzMjEsImV4cCI6MjA2MjY5NDMyMX0.ajHByYgE0jRHqdfGqm8WIGV-aiibG-tVhnewimbC3gA'
+const supabase = createClient('https://zmgbrbkzzzrxmkpfhmrg.supabase.co', 'eyJhbGciOi...')
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 const content = document.getElementById('content')
 
-// Coba login manual (bisa diganti pakai form)
-async function login() {
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email: 'jigong@example.com', // ganti dengan akun terdaftar
-    password: 'jigong123'     // ganti sesuai user
-  })
-
-  if (error) {
-    alert('Login gagal: ' + error.message)
-    return
-  }
-
-  loadData()
-}
-async function logout() {
+document.getElementById('logoutBtn').addEventListener('click', async () => {
   await supabase.auth.signOut()
-  content.innerHTML = '<p>Logout berhasil.</p>'
-}
-// Load data hanya milik user yang login
-async function loadData() {
-  const {
-    data: { user }
-  } = await supabase.auth.getUser()
+  // Redirect ke halaman login
+  window.location.href = 'Index.html'
+})
+
+window.addEventListener('DOMContentLoaded', async () => {
+  const { data: { user } } = await supabase.auth.getUser()
   if (!user) {
-    content.innerHTML = '<p>Silakan login untuk melihat data.</p>'
+    window.location.href = 'Index.html'
     return
   }
+  loadData()
+})
+
+async function loadData() {
   const { data, error } = await supabase
     .from('Web')
     .select('*')
@@ -84,6 +67,7 @@ async function loadData() {
     alert('Error loading data: ' + error.message)
     return
   }
+
   let out = ''
   data.forEach(row => {
     out += `
@@ -95,12 +79,6 @@ async function loadData() {
   })
   content.innerHTML = out
 }
-document.getElementById('loginBtn').addEventListener('click', login)
-document.getElementById('logoutBtn').addEventListener('click', logout)
-window.addEventListener('DOMContentLoaded', async () => {
-  const { data: { user } } = await supabase.auth.getUser()
-  if (user) loadData()
-})
 </script>
 </body>
 </html>
