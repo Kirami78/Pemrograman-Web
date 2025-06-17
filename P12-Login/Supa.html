@@ -13,7 +13,6 @@
   <div class="profile-photo-wrapper">
     <img src="profile.png" alt="profile" class="profile-photo" />
   </div>
-
   <div class="header-text">
     <h1>Tanzil Kirami</h1></h1>
     <p class="subtitle">They/Them Cencorang Aceh</p>
@@ -63,27 +62,19 @@ async function login() {
 
   loadData()
 }
-
 async function logout() {
   await supabase.auth.signOut()
   content.innerHTML = '<p>Logout berhasil.</p>'
 }
-
 // Load data hanya milik user yang login
 async function loadData() {
   const {
     data: { user }
   } = await supabase.auth.getUser()
-
   if (!user) {
-
     content.innerHTML = '<p>Silakan login untuk melihat data.</p>'
     return
   }
-
-
-
-
   const { data, error } = await supabase
     .from('Web')
     .select('*')
@@ -93,7 +84,6 @@ async function loadData() {
     alert('Error loading data: ' + error.message)
     return
   }
-
   let out = ''
   data.forEach(row => {
     out += `
@@ -103,21 +93,14 @@ async function loadData() {
       </div>
     `
   })
-
   content.innerHTML = out
-
 }
-
-
 document.getElementById('loginBtn').addEventListener('click', login)
 document.getElementById('logoutBtn').addEventListener('click', logout)
-
-
 window.addEventListener('DOMContentLoaded', async () => {
   const { data: { user } } = await supabase.auth.getUser()
   if (user) loadData()
 })
 </script>
-
 </body>
 </html>
