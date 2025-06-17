@@ -1,91 +1,90 @@
-/* General Reset */
+/* Reset dan Font */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Georgia', serif;
 }
 
-/* Body */
 body {
-  background: linear-gradient(135deg, #74ebd5, #ACB6E5);
-  min-height: 100vh;
+  background-color: #f4f4f4;
+  color: #333;
+  line-height: 1.6;
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: 100vh;
   padding: 20px;
 }
 
 /* Login Box */
 .login-box {
-  background-color: #ffffff;
+  background-color: #fff;
   padding: 40px 30px;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   max-width: 400px;
-  text-align: center;
+  width: 100%;
 }
 
 .login-box h2 {
-  margin-bottom: 20px;
-  color: #333;
-  font-size: 26px;
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 24px;
+  color: #2c3e50;
+  font-weight: bold;
 }
 
 .login-box label {
   display: block;
-  text-align: left;
-  margin: 10px 0 5px;
+  margin-bottom: 5px;
   font-weight: 500;
-  color: #444;
+  color: #2c3e50;
 }
 
 .login-box input {
   width: 100%;
-  padding: 12px;
-  border-radius: 10px;
+  padding: 10px;
   border: 1px solid #ccc;
-  margin-bottom: 16px;
-  transition: 0.2s ease;
+  margin-bottom: 15px;
+  border-radius: 4px;
+  font-size: 14px;
 }
 
 .login-box input:focus {
-  border-color: #5e9cff;
   outline: none;
+  border-color: #7f8c8d;
 }
 
 .login-box button {
   width: 100%;
-  padding: 12px;
-  background-color: #5e9cff;
-  color: white;
-  border: none;
-  border-radius: 10px;
+  padding: 10px;
+  background-color: #2c3e50;
+  color: #fff;
   font-weight: bold;
+  border: none;
+  border-radius: 4px;
   cursor: pointer;
-  font-size: 16px;
-  transition: 0.3s ease;
 }
 
 .login-box button:hover {
-  background-color: #3b7dd8;
+  background-color: #1a252f;
 }
 
-/* Supa / Profile Style */
+/* Profile (Supa.html) */
 .profile-container {
   width: 100%;
   max-width: 800px;
   background-color: #fff;
-  border-radius: 20px;
+  border-radius: 12px;
   padding: 30px;
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
 }
 
 .header-bg {
-  height: 150px;
-  background: linear-gradient(135deg, #00c9ff, #92fe9d);
-  border-radius: 15px 15px 0 0;
+  height: 120px;
+  background-color: #2c3e50;
+  border-radius: 10px 10px 0 0;
 }
 
 .profile-photo-wrapper {
@@ -94,10 +93,10 @@ body {
 }
 
 .profile-photo {
-  width: 120px;
-  height: 120px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
-  border: 5px solid white;
+  border: 4px solid white;
   object-fit: cover;
 }
 
@@ -107,13 +106,14 @@ body {
 }
 
 .header-text h1 {
-  font-size: 28px;
-  color: #333;
+  font-size: 24px;
+  color: #2c3e50;
 }
 
 .header-text .subtitle {
-  color: #777;
+  color: #7f8c8d;
   margin-top: 5px;
+  font-style: italic;
 }
 
 .action-buttons {
@@ -122,36 +122,34 @@ body {
 }
 
 .action-buttons button {
-  padding: 10px 20px;
-  margin: 5px;
-  background-color: #5e9cff;
+  background-color: #c0392b;
   color: white;
   border: none;
-  border-radius: 10px;
+  padding: 10px 20px;
   font-weight: bold;
+  border-radius: 5px;
   cursor: pointer;
-  transition: 0.3s ease;
 }
 
 .action-buttons button:hover {
-  background-color: #3b7dd8;
+  background-color: #962d22;
 }
 
 .content-card {
   margin-top: 25px;
   background-color: #f9f9f9;
-  border-radius: 12px;
+  border-radius: 8px;
   padding: 20px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+  border: 1px solid #ddd;
 }
 
 .content-card h2 {
-  color: #333;
+  color: #2c3e50;
   margin-bottom: 10px;
 }
 
 .content-card p {
-  color: #555;
+  color: #444;
 }
 
 ul {
@@ -161,7 +159,6 @@ ul {
 
 ul li {
   margin-bottom: 6px;
-  color: #444;
 }
 
 @media (max-width: 600px) {
