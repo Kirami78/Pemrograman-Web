@@ -1,55 +1,54 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>Login Supabase - Kirami</title>
+  <meta charset="UTF-8">
+  <title>Login Supabase - Kirami</title>
 </head>
 <body>
 
 <div class="login-box" id="loginBox">
-  <h2>Login</h2>
-  <form id="loginForm">
-    <label>Email:
-      <input type="email" id="username" required>
-    </label>
-    <br />
-    <label>Password:
-      <input type="password" id="password" required>
-    </label>
-    <br />
-    <button type="submit">Login</button>
-  </form>
+  <h2>Login</h2>
+  <form id="loginForm">
+    <label>Email:
+      <input type="email" id="username" required>
+    </label>
+    <br />
+    <label>Password:
+      <input type="password" id="password" required>
+    </label>
+    <br />
+    <button type="submit">Login</button>
+  </form>
 </div>
 
 <script type="module">
-  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
-  const supabaseUrl = 'https://zmgbrbkzzzrxmkpfhmrg.supabase.co'
-  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptZ2JyYmt6enpyeG1rcGZobXJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcxMTgzMjEsImV4cCI6MjA2MjY5NDMyMX0.ajHByYgE0jRHqdfGqm8WIGV-aiibG-tVhnewimbC3gA'
+  const supabaseUrl = 'https://zmgbrbkzzzrxmkpfhmrg.supabase.co'
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptZ2JyYmt6enpyeG1rcGZobXJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcxMTgzMjEsImV4cCI6MjA2MjY5NDMyMX0.ajHByYgE0jRHqdfGqm8WIGV-aiibG-tVhnewimbC3gA'
 
-  const supabase = createClient(supabaseUrl, supabaseKey)
+  const supabase = createClient(supabaseUrl, supabaseKey)
 
-  document.getElementById('loginForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
+  document.getElementById('loginForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
 
-    const email = document.getElementById('username').value.trim();
-    const password = document.getElementById('password').value.trim();
+    const email = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password
-    });
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
 
-    if (error) {
-      alert('Login gagal: ' + error.message);
-      return;
-    }
+    if (error) {
+      alert('Login gagal: ' + error.message);
+      return;
+    }
 
-    // Kalau berhasil, pindah ke halaman Supa
-    window.location.href = 'Supa.html';
-  });
+    // Berhasil login -> pindah ke halaman Supa
+    window.location.href = 'Supa.html';
+  });
 </script>
 
 </body>
 </html>
-
