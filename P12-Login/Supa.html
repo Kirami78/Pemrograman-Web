@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Wawan Sismadi</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="profile-container">
+  <div class="header-bg"></div>
+
+  <div class="profile-photo-wrapper">
+    <img src="profile.png" alt="profile" class="profile-photo" />
+  </div>
+
+  <div class="header-text">
+    <h1>Wawan Sismadi</h1>
+    <p class="subtitle">They/Them Cencorang Aceh</p>
+    <p>Aceh Selatan, Indonesia • <a href="https://wawan.sismadi.com">wawan.sismadi.com</a></p>
+    <p><strong>Kirami Langit Polusi</strong> — Universitas Abdul Ghani</p>
+  </div>
+
+  <div class="action-buttons">
+
+
+    <button id="loginBtn">Login untuk akses data</button>
+<button id="logoutBtn">Logout</button>
+
+  </div>
+
+  <div id="content"></div>
+
+  <div class="content-card">
+    <h3>Sosial Media</h3>
+    <ul>
+      <li><strong>linkedin :</strong> http://linkedin.com/in/sismadi</li>
+      <li><strong>credly :</strong> https://www.credly.com/users/wawan-sismadi</li>
+    </ul>
+  </div>
+</div>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+const SUPABASE_URL = 'https://zmgbrbkzzzrxmkpfhmrg'
+const SUPABASE_ANON_KEY = 'https://eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptZ2JyYmt6enpyeG1rcGZobXJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcxMTgzMjEsImV4cCI6MjA2MjY5NDMyMX0.ajHByYgE0jRHqdfGqm8WIGV-aiibG-tVhnewimbC3gA'
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+const content = document.getElementById('content')
+
+// Coba login manual (bisa diganti pakai form)
+async function login() {
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: 'user@example.com', // ganti dengan akun terdaftar
+    password: 'password123'     // ganti sesuai user
+  })
+
+  if (error) {
+    alert('Login gagal: ' + error.message)
+    return
+  }
+
+  loadData()
+}
+
+async function logout() {
+  await supabase.auth.signOut()
+  content.innerHTML = '<p>Logout berhasil.</p>'
+}
+
+// Load data hanya milik user yang login
+async function loadData() {
+  const {
+    data: { user }
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+
+    content.innerHTML = '<p>Silakan login untuk melihat data.</p>'
+    return
+  }
+
+
+
+
+  const { data, error } = await supabase
+    .from('Web')
+    .select('*')
+    .order('id')
+
+  if (error) {
+    alert('Error loading data: ' + error.message)
+    return
+  }
+
+  let out = ''
+  data.forEach(row => {
+    out += `
+      <div class="content-card">
+        <h2>${row.Judul}</h2>
+        <p>${row.Isi}</p>
+      </div>
+    `
+  })
+
+  content.innerHTML = out
+
+}
+
+
+document.getElementById('loginBtn').addEventListener('click', login)
+document.getElementById('logoutBtn').addEventListener('click', logout)
+
+
+window.addEventListener('DOMContentLoaded', async () => {
+  const { data: { user } } = await supabase.auth.getUser()
+  if (user) loadData()
+})
+</script>
+
+</body>
+</html>
