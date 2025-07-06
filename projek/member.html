@@ -1,1 +1,296 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Daftar Member UKM</title>
+  <style>
+    body {
+      font-family: 'Palatino', sans-serif;
+      margin: 0;
+      background: url('https://i.pinimg.com/736x/1d/4b/83/1d4b83968add4fedd1d23dcd65b6d7a2.jpg') repeat center center fixed;
+      background-size: cover;
+      background-attachment: scroll;
+      color: #ffeb3b;
+    }
 
+    #topBar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      background: rgba(0, 0, 0, 0.85);
+      color: #ffeb3b;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 24px;
+      font-family: 'Palatino', sans-serif;
+    }
+
+    table {
+      width: 90%;
+      margin: 30px auto;
+      border-collapse: collapse;
+      background: rgba(0, 0, 0, 0.85);
+      border: 2px solid #ffeb3b;
+      color: #fff;
+      border-radius: 10px;
+    }
+
+    th, td {
+      padding: 14px 16px;
+      border-bottom: 1px solid #555;
+      text-align: left;
+    }
+
+    th {
+      background: rgba(255, 235, 59, 0.3);
+      font-family: Impact, sans-serif;
+    }
+
+    tr:hover {
+      background: rgba(255,255,255,0.1);
+    }
+
+    button {
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      padding: 10px 14px;
+      font-weight: bold;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    #backBtn {
+      margin: 20px 30px;
+      background: #555;
+      color: #ffeb3b;
+    }
+
+    #logoutBtn {
+      top: 20px;
+      right: 20px;
+      background: #ba0909;
+      color: #fff;
+      padding: 10px 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+     #logoutBtn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .edit-btn {
+      background: #1976d2;
+      color: white;
+    }
+
+    .delete-btn {
+      background: #d32f2f;
+      color: white;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: #222;
+      padding: 25px;
+      border-radius: 12px;
+      width: 400px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+      color: #ffeb3b;
+    }
+
+    .modal-content input {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .modal-content .btn-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <!-- ===== Bar Atas dengan Logout ===== -->
+  <div id="topBar">
+    <h2 id="judulHalaman">Daftar Member UKM</h2>
+    <button id="logoutBtn">Logout</button>
+  </div>
+
+  <!-- ===== Tombol Kembali ===== -->
+  <button id="backBtn">⬅ Kembali</button>
+
+  <!-- ===== Tabel Daftar Member ===== -->
+  <table>
+    <thead>
+      <tr>
+        <th>Nama</th>
+        <th>Kelas</th>
+        <th>Semester</th>
+        <th>Prodi</th>
+        <th>UKM</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody id="memberTable"></tbody>
+  </table>
+
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <h3>Edit Member</h3>
+      <input type="text" id="editNama" placeholder="Nama">
+      <input type="text" id="editKelas" placeholder="Kelas">
+      <input type="text" id="editSemester" placeholder="Semester">
+      <input type="text" id="editProdi" placeholder="Prodi">
+      <div style="margin-top: 10px; display: flex; gap: 10px;">
+        <button id="saveEditBtn">Simpan</button>
+        <button id="cancelEditBtn" style="background: #ccc;">Batal</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ===== Script Supabase dan Logika ===== -->
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    // Inisialisasi Supabase
+    const supabase = createClient(
+      'https://fcsnwmzrpwsabsqnscwj.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZjc253bXpycHdzYWJzcW5zY3dqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY1MTUwNDUsImV4cCI6MjA2MjA5MTA0NX0.QKBmiZGCbP79v75XE4VTG0TDmGZV-iC2vE0gOzLMeH0'
+    );
+
+    // Ambil elemen DOM
+    const logoutBtn = document.getElementById('logoutBtn');
+    const backBtn = document.getElementById('backBtn');
+    const memberTable = document.getElementById('memberTable');
+
+    // Ambil parameter UKM dari URL
+    const ukmNama = new URLSearchParams(window.location.search).get('ukm');
+    document.getElementById("judulHalaman").textContent = `Daftar Member UKM: ${ukmNama}`;
+
+    // Logout dan redirect ke index
+    logoutBtn.onclick = async () => {
+      await supabase.auth.signOut();
+      window.location.href = 'index.html';
+    };
+
+    // Kembali ke dashboard admin
+    backBtn.onclick = () => {
+      window.location.href = 'admin.html';
+    };
+
+    // Ambil dan tampilkan member yang sudah diterima
+    async function loadMembers() {
+      const { data, error } = await supabase
+        .from('pendaftaran')
+        .select('*')
+        .eq('status', true)
+        .eq('nama_ukm', ukmNama)
+        .order('nama');
+
+      if (error) return alert('Gagal load member: ' + error.message);
+
+      memberTable.innerHTML = data.map(p => `
+        <tr>
+          <td>${p.nama}</td>
+          <td>${p.kelas}</td>
+          <td>${p.semester}</td>
+          <td>${p.prodi}</td>
+          <td>${p.nama_ukm}</td>
+          <td>
+            <button onclick="editMember(${p.id})" style="margin-right: 5px;">Edit</button>
+            <button onclick="deleteMember(${p.id})" style="background:red;color:white;">Hapus</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // Jalankan saat halaman dibuka
+    loadMembers();
+    const editModal = document.getElementById('editModal');
+    const editNama = document.getElementById('editNama');
+    const editKelas = document.getElementById('editKelas');
+    const editSemester = document.getElementById('editSemester');
+    const editProdi = document.getElementById('editProdi');
+    const saveEditBtn = document.getElementById('saveEditBtn');
+    const cancelEditBtn = document.getElementById('cancelEditBtn');
+
+    let editingId = null;
+
+    window.editMember = async (id) => {
+      const { data, error } = await supabase.from('pendaftaran').select('*').eq('id', id).single();
+      if (error) return alert('Gagal ambil data: ' + error.message);
+
+      editingId = id;
+      editNama.value = data.nama;
+      editKelas.value = data.kelas;
+      editSemester.value = data.semester;
+      editProdi.value = data.prodi;
+
+      editModal.style.display = 'flex';
+    };
+
+    saveEditBtn.onclick = async () => {
+      const { error } = await supabase.from('pendaftaran').update({
+        nama: editNama.value,
+        kelas: editKelas.value,
+        semester: editSemester.value,
+        prodi: editProdi.value
+      }).eq('id', editingId);
+
+      if (error) return alert('Gagal update: ' + error.message);
+      editModal.style.display = 'none';
+      loadMembers();
+    };
+
+    cancelEditBtn.onclick = () => {
+      editModal.style.display = 'none';
+    };
+
+    window.onclick = function(event) {
+      if (event.target === editModal) editModal.style.display = 'none';
+    };
+
+    window.deleteMember = async (id) => {
+      if (!confirm('Yakin hapus member ini?')) return;
+
+      const { error } = await supabase.from('pendaftaran').delete().eq('id', id);
+      if (error) return alert('Gagal hapus: ' + error.message);
+      loadMembers();
+    };
+
+  </script>
+</body>
+</html>
