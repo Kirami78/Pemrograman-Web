@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Daftar UKM Universitas Ipwija</title>
+  <style>
+     body {
+      font-family: 'Palatino', serif;
+      background: #0f0f0f url('https://i.pinimg.com/736x/df/2f/8b/df2f8b34d45f455b8bc4649ecbec1802.jpg') no-repeat center center fixed;
+      background-size: cover;
+      background-attachment: scroll;
+      margin: 0;
+      padding: 0; 
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 16px;
+      box-shadow: 0 0 40px rgba(255, 255, 255, 0.05);
+      animation: fadeInUp 1s ease-out;
+      border: 2px dashed #ffeb3b;
+    }
+
+    @keyframes fadeInUp {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      text-align: center;
+      color: #ffae00;
+      margin-bottom: 30px;
+      font-size: 32px;
+      text-shadow: 1px 1px 2px #000;
+    }
+
+    .group-info {
+      text-align: center;
+      color: #bbb;
+      margin-top: 50px;
+      font-size: 14px;
+      font-style: italic;
+    }
+
+    #filterInput {
+      width: 70%;
+      padding: 12px;
+      margin: 0 auto 30px;
+      display: block;
+      border-radius: 10px;
+      background: #333;
+      color: #fff;
+      border: 1px solid #777;
+      font-size: 16px;
+    }
+
+    #filterInput:focus {
+      outline: none;
+      box-shadow: 0 0 5px #ffeb3b;
+    }
+
+    .auth-section {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .auth-section button, #submitLoginBtn, #logoutBtn {
+      margin: 5px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 10px;
+      background: #ffeb3b;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .auth-section button:hover, #submitLoginBtn:hover, #logoutBtn:hover {
+      background: #fff176;
+      transform: scale(1.05);
+    }
+
+    #logoutBtn {
+      margin-top: 10px;
+      background: #ba0909;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: none;
+      font-weight: bold;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    #logoutBtn:hover {
+      background: #c9302c;
+      transform: scale(1.05);
+    }
+
+    #loginForm input {
+      padding: 12px;
+      margin: 8px;
+      border-radius: 8px;
+      border: 1px solid #666;
+      background: #222;
+      color: #fff;
+      width: 220px;
+    }
+
+    .ukm-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .ukm-card {
+      background: #1a1a1a;
+      border-radius: 12px;
+      border: 1px solid #ffeb3b;
+      padding: 20px;
+      color: #fff;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .ukm-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 15px rgba(255, 235, 59, 0.6);
+    }
+
+    .ukm-card h3 {
+      color: #ffeb3b;
+    }
+
+    .ukm-card button {
+      background: #ffeb3b;
+      color: #000;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .ukm-card button:hover {
+      background: #fff176;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .modal-content {
+      background: #212121;
+      color: #fff;
+      padding: 25px;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 500px;
+      border: 1px solid #ffeb3b;
+    }
+
+    .modal-content input {
+      background: #333;
+      color: #fff;
+      border: 1px solid #666;
+      padding: 10px;
+      border-radius: 8px;
+      width: 100%;
+      margin-bottom: 12px;
+    }
+
+    .modal-content button {
+      background: #ffeb3b;
+      color: #000;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      width: 100%;
+      cursor: pointer;
+    }
+
+    .modal-content button:hover {
+      background: #fff176;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div style="text-align: center;">
+    <img src="https://cdn.s.id/images/d80a34be-302e-4667-9e50-452d903e25b1_1000x1000.png" alt="Logo UKM" style="max-width: 150px; margin-bottom: 10px;">
+    <h1>Pendaftaran UKM Universitas Ipwija</h1>
+  </div>
+
+  <div class="auth-section">
+    <button id="loginUserBtn">Login sebagai User</button>
+    <button id="loginAdminBtn">Login sebagai Admin</button>
+    <button id="logoutBtn">Logout</button>
+    <div id="loginForm">
+      <input type="email" id="email" placeholder="Email">
+      <input type="password" id="password" placeholder="Password">
+      <br />
+      <button id="submitLoginBtn">Login</button>
+    </div>
+  </div>
+
+  <input type="text" id="filterInput" placeholder="Cari nama UKM..." style="display:none;">
+  <div class="ukm-list" id="ukmList"></div>
+  <div class="group-info" id="groupInfo"><th>✉ UKMUNIP@gmail.com ✆082145896729</div>
+</div>
+
+<!-- Modal Form -->
+<div class="modal" id="formModal">
+  <div class="modal-content">
+    <h3>Form Pendaftaran UKM</h3>
+    <input type="text" id="namaInput" placeholder="Nama">
+    <input type="text" id="kelasInput" placeholder="Kelas">
+    <input type="number" id="semesterInput" placeholder="Semester (1-8)">
+    <input type="text" id="prodiInput" placeholder="Program Studi">
+    <input type="text" id="penyakitInput" placeholder="Riwayat Penyakit (jika ada)">
+    <input type="email" id="emailInput" placeholder="Email Mahasiswa">
+    <button onclick="submitForm()">Daftar</button>
+  </div>
+</div>
+
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+  const supabase = createClient('https://fcsnwmzrpwsabsqnscwj.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZjc253bXpycHdzYWJzcW5zY3dqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY1MTUwNDUsImV4cCI6MjA2MjA5MTA0NX0.QKBmiZGCbP79v75XE4VTG0TDmGZV-iC2vE0gOzLMeH0');
+
+  let currentLoginType = '', selectedUKM = null;
+  let currentUserEmail = null;
+
+  const loginUserBtn = document.getElementById('loginUserBtn');
+  const loginAdminBtn = document.getElementById('loginAdminBtn');
+  const logoutBtn = document.getElementById('logoutBtn');
+  const submitLoginBtn = document.getElementById('submitLoginBtn');
+  const loginForm = document.getElementById('loginForm');
+  const filterInput = document.getElementById('filterInput');
+  const groupInfo = document.getElementById('groupInfo');
+  const ukmList = document.getElementById('ukmList');
+  const formModal = document.getElementById('formModal');
+  const namaInput = document.getElementById('namaInput');
+  const kelasInput = document.getElementById('kelasInput');
+  const semesterInput = document.getElementById('semesterInput');
+  const prodiInput = document.getElementById('prodiInput');
+  const penyakitInput = document.getElementById('penyakitInput');
+  const emailInput = document.getElementById('emailInput');
+
+  loginUserBtn.onclick = () => { currentLoginType = 'user'; loginForm.style.display = 'block'; }
+  loginAdminBtn.onclick = () => { currentLoginType = 'admin'; loginForm.style.display = 'block'; }
+
+  submitLoginBtn.onclick = async () => {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) return alert('Login gagal: ' + error.message);
+    if (currentLoginType === 'user' && email === 'admin@example.com') {
+      alert('Akun admin tidak bisa login sebagai user.');
+      await supabase.auth.signOut();
+      return;
+    }
+    if (currentLoginType === 'admin' && email === 'admin@example.com') {
+      window.location.href = 'admin.html';
+    } else if (currentLoginType === 'user') {
+      currentUserEmail = email;
+      loginForm.style.display = 'none';
+      loginUserBtn.style.display = 'none';
+      loginAdminBtn.style.display = 'none';
+      logoutBtn.style.display = 'inline-block';
+      groupInfo.style.display = 'none';
+      filterInput.style.display = 'block';
+      loadUKM();
+    } else {
+      alert('Anda bukan admin.');
+      await supabase.auth.signOut();
+    }
+  };
+
+  logoutBtn.onclick = async () => {
+    await supabase.auth.signOut();
+    location.reload();
+  };
+
+  async function loadUKM() {
+    const { data, error } = await supabase.from('ukm').select('*');
+    if (error) return alert('Gagal memuat UKM: ' + error.message);
+    renderList(data);
+    filterInput.addEventListener('input', () => {
+      const filtered = data.filter(d => d.nama.toLowerCase().includes(filterInput.value.toLowerCase()));
+      renderList(filtered);
+    });
+  }
+
+  function renderList(list) {
+    ukmList.innerHTML = list.map(ukm => `
+      <div class="ukm-card">
+        <h3>${ukm.nama}</h3>
+        <details>
+          <summary>Detail UKM</summary>
+          <p><strong>Ketua:</strong> ${ukm.ketua ?? 'Tidak tersedia'}</p>
+        <p><strong>Jadwal:</strong> ${ukm.jadwal ?? 'Belum ditentukan'}</p>
+        <p><strong>Kontak:</strong> ${ukm.kontak ?? 'Tidak tersedia'}</p>
+        <p><strong>Lokasi:</strong> ${ukm.lokasi ?? '-'}</p>
+        <p><strong>Kategori:</strong> ${ukm.kategori ?? '-'}</p>
+        <button onclick='openForm(${JSON.stringify(ukm)})'>Daftar</button>
+        </details>
+      </div>
+    `).join('');
+  }
+
+  window.openForm = (ukm) => {
+    selectedUKM = ukm;
+    formModal.style.display = 'flex';
+  };
+
+  window.submitForm = async () => {
+    const nama = namaInput.value.trim();
+    const kelas = kelasInput.value.trim();
+    const semester = parseInt(semesterInput.value.trim());
+    const prodi = prodiInput.value.trim();
+    const penyakit = penyakitInput.value.trim().toLowerCase();
+    const email = emailInput.value.trim();
+
+    if (!email || !nama || !kelas || !semester || !prodi)
+      return alert('Semua field wajib diisi');
+    if (semester > 5)
+      return alert('Semester di atas 5 tidak diperbolehkan mendaftar.');
+
+    const prodiValid = ['informatika','manajemen','kebidanan','rekayasa perangkat lunak','sistem informasi'];
+    if (!prodiValid.includes(prodi.toLowerCase()))
+      return alert('Prodi tidak valid. Pilih: ' + prodiValid.join(', '));
+
+    const penyakitTerlarang = ['asma','jantung','cedera','kanker'];
+    const isFisik = selectedUKM.kategori?.toLowerCase() === 'fisik';
+    if (isFisik && penyakitTerlarang.includes(penyakit))
+      return alert('Karena penyakit dan UKM fisik, Anda tidak dapat mendaftar.');
+
+    const { data: cekSama } = await supabase.from('pendaftaran').select('id')
+      .eq('nama', nama).eq('nama_ukm', selectedUKM.nama).eq('status', true);
+    if (cekSama.length > 0)
+      return alert('Anda sudah diterima di UKM ini.');
+
+    const { data: daftarDiterima } = await supabase.from('pendaftaran').select('id').eq('nama', nama).eq('status', true); // hanya hitung yang sudah diterima
+    if (daftarDiterima.length >= 2) return alert('Anda sudah diterima di 2 UKM. Tidak bisa daftar lagi.');
+
+
+    const { data: cekGanda } = await supabase.from('pendaftaran').select('id').or(`nama.eq.${nama},email.eq.${email}`).eq('status', false); // hanya yang belum diterima
+      if (cekGanda.length > 5) {
+        return alert('Nama atau email sudah pernah digunakan untuk mendaftar.');}
+
+
+
+    const { error } = await supabase.from('pendaftaran').insert([{
+      nama, kelas, semester, prodi, penyakit, email,
+      nama_ukm: selectedUKM.nama,
+      kategori_ukm: selectedUKM.kategori,
+      status: false
+    }]);
+
+    if (error) return alert('Gagal mendaftar: ' + error.message);
+    alert('Pendaftaran berhasil ke UKM ' + selectedUKM.nama);
+    formModal.style.display = 'none';
+  };
+
+  window.onclick = (e) => {
+    if (e.target === formModal) formModal.style.display = 'none';
+  };
+
+  window.addEventListener('DOMContentLoaded', async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      currentUserEmail = user.email;
+      if (user.email === 'admin@example.com') {
+        window.location.href = 'admin.html';
+      } else {
+        loginUserBtn.style.display = 'none';
+        loginAdminBtn.style.display = 'none';
+        logoutBtn.style.display = 'inline-block';
+        groupInfo.style.display = 'none';
+        filterInput.style.display = 'block';
+        loadUKM();
+      }
+    }
+  });
+</script>
+</body>
+</html>
