@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Admin Panel UKM Universitas IPWIJA" />
+    <title>Admin Panel UKM</title>
+    <style>
+      body {
+        font-family: "Georgia", serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(to bottom, #ffffff, #212d41);
+        background-attachment: fixed;
+        color: #e0e6f7;
+        animation: fadeInBody 0.8s ease;
+      }
+
+      .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        max-width: 1200px;
+        width: 90%;
+        margin: 40px auto;
+        padding: 32px 0;
+        background: rgba(20, 34, 70, 0.9);
+        border-radius: 16px;
+        box-shadow: 0 0 40px rgba(173, 216, 230, 0.2);
+        border: 2px dashed #5c9ded;
+        animation: fadeInUp 1s ease-out;
+      }
+
+      @keyframes fadeInBody {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      #topBar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 30px;
+        background: #1e2a4f;
+        color: #ffffff;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        animation: slideDown 0.7s ease;
+      }
+      .topbar-right {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      @keyframes slideDown {
+        from {
+          transform: translateY(-50px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      #ukmButtons {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 28px 32px;
+        justify-items: center;
+        align-items: center;
+        padding: 10px 24px;
+      }
+
+      @keyframes fadeInGrid {
+        from {
+          opacity: 0;
+          transform: scale(0.98);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .modal-content button,
+      .ukm-card button {
+        background: #3b5ca3;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+        border: none;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .btn-export {
+        background: #3b5ca3;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+        border: none;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .btn-add {
+        background: #3b5ca3;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+        border: none;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .btn-add:hover,
+      .btn-export:hover,
+      .modal-content button:hover,
+      .ukm-card button:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 6px 12px rgba(255, 255, 255, 0.3);
+      }
+
+      #logoutBtn {
+        background: #c0392b;
+        color: #fff;
+        padding: 10px 18px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      #logoutBtn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      .ukm-card {
+        width: 300px;
+        background: rgba(8, 12, 76, 0.85);
+        padding: 28px 20px;
+        border-radius: 16px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        text-align: center;
+        border: 2px solid #b9cfeb;
+        font-weight: bold;
+        font-size: 22px;
+      }
+
+      @keyframes fadeInCard {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 600px) {
+        .ukm-card {
+          width: 120px;
+          height: 120px;
+          padding: 8px;
+        }
+
+        .ukm-card h3 {
+          font-size: 0.9rem;
+        }
+
+        .ukm-card button {
+          font-size: 0.75rem;
+          padding: 5px 10px;
+        }
+      }
+
+      .ukm-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(255, 255, 255, 0.3);
+      }
+
+      .ukm-card h3 {
+        margin-bottom: 10px;
+        color: #ffffff;
+        font-family: "Georgia", serif;
+        font-size: 20px;
+        text-shadow: 1px 1px 2px #000;
+      }
+
+      .export-form {
+        display: inline-flex;
+        align-items: center;
+        margin: 30px;
+      }
+
+      .export-form select {
+        padding: 8px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        margin-right: 10px;
+        background: #1e2a4f;
+        color: #e0e6f7;
+      }
+
+      .export-form button {
+        background: #3b5ca3;
+        color: #fff;
+        border-radius: 8px;
+        padding: 8px 16px;
+        font-weight: bold;
+        border: none;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .export-form button:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 6px 12px rgba(255, 255, 255, 0.3);
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        justify-content: center;
+        align-items: center;
+        animation: fadeIn 0.3s ease;
+      }
+
+      .modal-content {
+        background: #1e2a4f;
+        padding: 30px;
+        border-radius: 16px;
+        min-width: 400px;
+        text-align: center;
+        border: 2px solid #5c9ded;
+        color: #e0e6f7;
+      }
+
+      .form-popup {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(30, 42, 79, 0.95);
+        padding: 25px;
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+        border-radius: 12px;
+        min-width: 300px;
+        z-index: 1000;
+        animation: scaleIn 0.4s ease;
+        color: #fff;
+      }
+
+      form input {
+        display: block;
+        width: 90%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #5c9ded;
+        border-radius: 6px;
+        background: #f5f5f5;
+        color: #000000;
+      }
+
+      .form-popup button {
+        margin-top: 10px;
+        margin-right: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ===== Bar Atas ===== -->
+    <div id="topBar">
+      <h2>Admin Dashboard UKM</h2>
+
+      <div class="topbar-right">
+        <button id="addUkmBtn" class="btn-add">Tambah UKM</button>
+        <!-- ===== Form Export Data ===== -->
+        <form id="exportForm" class="export-form">
+          <select id="exportSelect">
+            <option value="">-- Export Data --</option>
+            <option value="pendaftar">Pendaftar</option>
+            <option value="member">Member</option>
+            <option value="semua">Semua</option>
+          </select>
+          <button type="submit" class="btn-export">Export</button>
+        </form>
+        <button id="logoutBtn">Logout</button>
+      </div>
+    </div>
+
+    <div class="container">
+      <div id="ukmButtons"></div>
+    </div>
+
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <h3 id="modalTitle">Data UKM</h3>
+        <button id="viewMembersBtn" class="btn-member">Lihat Member</button>
+        <button id="viewPendaftarBtn" class="btn-pendaftar">
+          Lihat Pendaftar
+        </button>
+        <button id="editUkmBtn">Edit UKM</button>
+        <button id="deleteUkmBtn" class="btn-close">Hapus UKM</button>
+        <button id="closeModalBtn" class="btn-close">Tutup</button>
+      </div>
+    </div>
+
+    <div id="formPopup" class="form-popup">
+      <h3 id="formTitle">Form UKM</h3>
+      <form id="ukmForm">
+        <input type="text" id="nama" placeholder="Nama UKM" required />
+        <input type="text" id="kategori" placeholder="Kategori" required />
+        <input type="text" id="ketua" placeholder="Ketua" required />
+        <input type="text" id="kontak" placeholder="Kontak" required />
+        <input type="text" id="lokasi" placeholder="Lokasi" required />
+        <input type="text" id="jadwal" placeholder="Jadwal" required />
+        <button type="submit">Simpan</button>
+        <button
+          type="button"
+          onclick="document.getElementById('formPopup').style.display='none'"
+        >
+          Batal
+        </button>
+      </form>
+    </div>
+
+    <script type="module">
+      import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+      import * as XLSX from "https://cdn.jsdelivr.net/npm/xlsx@0.18.5/+esm";
+      const supabase = createClient(
+        "https://fcsnwmzrpwsabsqnscwj.supabase.co",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZjc253bXpycHdzYWJzcW5zY3dqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY1MTUwNDUsImV4cCI6MjA2MjA5MTA0NX0.QKBmiZGCbP79v75XE4VTG0TDmGZV-iC2vE0gOzLMeH0"
+      );
+
+      const logoutBtn = document.getElementById("logoutBtn");
+      const addUkmBtn = document.getElementById("addUkmBtn");
+      const exportForm = document.getElementById("exportForm");
+      const exportSelect = document.getElementById("exportSelect");
+      const ukmButtons = document.getElementById("ukmButtons");
+      const modal = document.getElementById("modal");
+      const modalTitle = document.getElementById("modalTitle");
+      const viewMembersBtn = document.getElementById("viewMembersBtn");
+      const viewPendaftarBtn = document.getElementById("viewPendaftarBtn");
+      const editUkmBtn = document.getElementById("editUkmBtn");
+      const deleteUkmBtn = document.getElementById("deleteUkmBtn");
+      const closeModalBtn = document.getElementById("closeModalBtn");
+      const formPopup = document.getElementById("formPopup");
+      const ukmForm = document.getElementById("ukmForm");
+
+      let selectedUKM = "";
+
+      logoutBtn.onclick = async () => {
+        await supabase.auth.signOut();
+        window.location.href = "index.html";
+      };
+
+      exportForm.onsubmit = (e) => {
+        e.preventDefault();
+        const choice = exportSelect.value;
+        if (!choice) return alert("Pilih jenis data yang ingin diexport");
+        if (choice === "pendaftar")
+          exportData("pendaftaran", null, "pendaftar_all");
+        else if (choice === "member")
+          exportData("pendaftaran", { status: true }, "member_all");
+        else if (choice === "semua") exportAll();
+      };
+
+      async function exportData(table, filters, fileName) {
+        let query = supabase.from(table).select("*");
+        if (filters)
+          Object.entries(filters).forEach(
+            ([key, value]) => (query = query.eq(key, value))
+          );
+        const { data, error } = await query;
+        if (error) return alert("Gagal export: " + error.message);
+        exportToExcel(data, fileName);
+      }
+
+      async function exportAll() {
+        const { data, error } = await supabase.from("pendaftaran").select("*");
+        if (error) return alert("Gagal export: " + error.message);
+        exportToExcel(data, "pendaftar_dan_member");
+      }
+
+      function exportToExcel(data, fileName) {
+        const worksheet = XLSX.utils.json_to_sheet(data);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+        XLSX.writeFile(workbook, `${fileName}.xlsx`);
+      }
+
+      addUkmBtn.onclick = () => {
+        document.getElementById("formTitle").textContent = "Tambah UKM";
+        ukmForm.reset();
+        ukmForm.dataset.editing = "";
+        formPopup.style.display = "block";
+      };
+
+      ukmForm.onsubmit = async (e) => {
+        e.preventDefault();
+        const data = {
+          nama: ukmForm.nama.value,
+          kategori: ukmForm.kategori.value,
+          ketua: ukmForm.ketua.value,
+          kontak: ukmForm.kontak.value,
+          lokasi: ukmForm.lokasi.value,
+          jadwal: ukmForm.jadwal.value,
+        };
+        let res;
+        if (ukmForm.dataset.editing) {
+          res = await supabase
+            .from("ukm")
+            .update(data)
+            .eq("nama", ukmForm.dataset.editing);
+        } else {
+          res = await supabase.from("ukm").insert([data]);
+        }
+        if (res.error) return alert("Gagal simpan: " + res.error.message);
+        formPopup.style.display = "none";
+        loadUKMButtons();
+      };
+
+      async function checkAdmin() {
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+        if (!user || user.email !== "admin@example.com") {
+          alert("Hanya admin yang bisa akses!");
+          await supabase.auth.signOut();
+          return (window.location.href = "index.html");
+        }
+        loadUKMButtons();
+      }
+
+      async function loadUKMButtons() {
+        const { data, error } = await supabase
+          .from("ukm")
+          .select("*")
+          .order("id");
+        if (error) return alert("Gagal load UKM: " + error.message);
+        ukmButtons.innerHTML = data
+          .map(
+            (ukm) => `
+        <div class="ukm-card" onclick="openModal('${ukm.nama}')">
+          <h3>${ukm.nama}</h3>
+          <p style="margin-top: 30px; font-weight: bold; color: #3498db;"></p>
+        </div>
+      `
+          )
+          .join("");
+      }
+
+      window.openModal = (ukmNama) => {
+        selectedUKM = ukmNama;
+        modalTitle.textContent = `Data UKM: ${ukmNama}`;
+        modal.style.display = "flex";
+      };
+
+      editUkmBtn.onclick = async () => {
+        const { data, error } = await supabase
+          .from("ukm")
+          .select("*")
+          .eq("nama", selectedUKM)
+          .single();
+        if (error) return alert("Gagal load UKM: " + error.message);
+        ukmForm.nama.value = data.nama;
+        ukmForm.kategori.value = data.kategori;
+        ukmForm.ketua.value = data.ketua;
+        ukmForm.kontak.value = data.kontak;
+        ukmForm.lokasi.value = data.lokasi;
+        ukmForm.jadwal.value = data.jadwal;
+        ukmForm.dataset.editing = data.nama;
+        formPopup.style.display = "block";
+        modal.style.display = "none";
+      };
+
+      // Hapus UKM
+      deleteUkmBtn.onclick = async () => {
+        if (!confirm("Yakin hapus UKM ini?")) return;
+        const { error } = await supabase
+          .from("ukm")
+          .delete()
+          .eq("nama", selectedUKM);
+        if (error) return alert("Gagal hapus UKM: " + error.message);
+        modal.style.display = "none";
+        loadUKMButtons();
+      };
+
+      // Lihat Member UKM
+      viewMembersBtn.onclick = () => {
+        window.location.href = `member.html?ukm=${encodeURIComponent(
+          selectedUKM
+        )}`;
+      };
+
+      // Lihat Pendaftar UKM
+      viewPendaftarBtn.onclick = () => {
+        window.location.href = `pendaftaran.html?ukm=${encodeURIComponent(
+          selectedUKM
+        )}`;
+      };
+
+      closeModalBtn.onclick = () => (modal.style.display = "none");
+
+      window.addEventListener("DOMContentLoaded", checkAdmin);
+    </script>
+  </body>
+</html>

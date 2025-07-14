@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Daftar Pendaftar UKM</title>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <style>
+    body {
+      font-family: 'Georgia', serif;
+      margin: 0;
+      background: #ffffff;
+      color: #e0f1ff;
+    }
+
+    #topBar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      background: #1b2a49;
+      color: #e0f1ff;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 24px;
+      font-family: 'Palatino', serif;
+    }
+
+    table {
+      width: 90%;
+      margin: 30px auto;
+      border-collapse: collapse;
+      background: #1b2a49;
+      border: 1.5px solid #5c9ded;
+      color: #e0f1ff;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 14px 16px;
+      border-bottom: 1px solid #1e3a5f;
+      text-align: left;
+    }
+
+    th {
+      background: rgba(70, 130, 180, 0.2);
+      color: #f1f1f1;
+      font-family: 'Georgia', serif;
+      font-weight: bold;
+    }
+
+    tr:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    button {
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      padding: 10px 14px;
+      font-weight: bold;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    #backBtn {
+      margin: 20px 30px;
+      background: #1e3a5f;
+      color: #ffffff;
+    }
+
+    #logoutBtn {
+      background: #b23c3c;
+      color: #fff;
+      padding: 10px 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    #logoutBtn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .edit-btn {
+      background: #3a75c4;
+      color: white;
+    }
+
+    .delete-btn {
+      background: #c0392b;
+      color: white;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: #1b2a49;
+      padding: 25px;
+      border-radius: 12px;
+      width: 400px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+      color: #e0f1ff;
+      border: 2px solid #5c9ded;
+    }
+
+    .modal-content input {
+      padding: 10px;
+      border: 1px solid #5c9ded;
+      background: #0d1b2a;
+      color: #e0f1ff;
+      border-radius: 6px;
+    }
+
+    .modal-content .btn-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+  </style>
+</head>
+<body>
+  
+  <!-- ===== Bar Atas dengan Logout ===== -->
+  <div id="topBar">
+    <h2 id="judulHalaman">Daftar Pendaftar UKM</h2>
+    <button id="logoutBtn">Logout</button>
+  </div>
+
+  <!-- ===== Tombol Kembali ===== -->
+  <button id="backBtn" onclick="history.back()">⬅ Kembali</button>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Nama</th>
+        <th>Kelas</th>
+        <th>Semester</th>
+        <th>Prodi</th>
+        <th>Riwayat Penyakit</th>
+        <th>Email</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody id="pendaftarList"></tbody>
+  </table>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    emailjs.init("iRKDh5AaiToEGF15X"); // Ganti dengan public key milikmu
+
+    const supabase = createClient(
+      'https://fcsnwmzrpwsabsqnscwj.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZjc253bXpycHdzYWJzcW5zY3dqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY1MTUwNDUsImV4cCI6MjA2MjA5MTA0NX0.QKBmiZGCbP79v75XE4VTG0TDmGZV-iC2vE0gOzLMeH0'
+    );
+
+    const params = new URLSearchParams(window.location.search);
+    const ukm = params.get('ukm');
+    document.getElementById("judulHalaman").textContent = `Daftar Pendaftar UKM: ${ukm}`;
+
+    document.getElementById('logoutBtn').onclick = async () => {
+      await supabase.auth.signOut();
+      window.location.href = 'index.html';
+    };
+
+    async function loadPendaftar() {
+      const { data, error } = await supabase
+        .from('pendaftaran')
+        .select('*')
+        .eq('nama_ukm', ukm)
+        .eq('status', false);
+
+      if (error) return alert('Gagal ambil data: ' + error.message);
+
+      const tbody = document.getElementById('pendaftarList');
+      tbody.innerHTML = data.map(d => `
+        <tr>
+          <td>${d.nama}</td>
+          <td>${d.kelas}</td>
+          <td>${d.semester}</td>
+          <td>${d.prodi}</td>
+          <td>${d.penyakit || '-'}</td>
+          <td>${d.email}</td>
+          <td>
+            <button class="btn-action btn-terima" onclick="terima(${d.id}, '${d.email}', '${d.nama}', '${d.nama_ukm}')">Terima</button>
+            <button class="btn-action btn-tolak" onclick="tolak(${d.id}, '${d.email}', '${d.nama}', '${d.nama_ukm}')">Tolak</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    window.terima = async (id, email, nama, ukm) => {
+      const row = document.querySelector(`button[onclick*="terima(${id}"]`).closest('tr');
+      const btn = row.querySelector('.btn-terima');
+      btn.disabled = true;
+      btn.innerText = "Memproses...";
+
+      const { error } = await supabase.from('pendaftaran').update({ status: true }).eq('id', id);
+      if (error) {
+        alert('Gagal menerima: ' + error.message);
+        btn.disabled = false;
+        btn.innerText = "Terima";
+        btn.classList.add("loading");
+        return;
+      }
+
+      await sendEmail(email, nama, ukm, true);
+      row.remove(); // hapus baris langsung dari tabel
+    };
+
+
+    window.tolak = async (id, email, nama, ukm) => {
+      const row = document.querySelector(`button[onclick*="tolak(${id}"]`).closest('tr');
+      const btn = row.querySelector('.btn-tolak');
+      btn.disabled = true;
+      btn.innerText = "Memproses...";
+
+      const { error } = await supabase.from('pendaftaran').delete().eq('id', id);
+      if (error) {
+        alert('Gagal menolak: ' + error.message);
+        btn.disabled = false;
+        btn.innerText = "Tolak";
+        btn.classList.remove("loading");
+        return;
+      }
+
+      await sendEmail(email, nama, ukm, false);
+      row.remove(); // hapus baris langsung dari tabel
+    };
+
+
+    async function sendEmail(toEmail, nama, ukm, isAccepted) {
+      try {
+        await emailjs.send("service_myahg9t", "template_x1pkhda", {
+          to_email: toEmail,
+          to_name: nama,
+          ukm_name: ukm,
+          status_text: isAccepted ? "DITERIMA" : "DITOLAK"
+        });
+      } catch (err) {
+        alert("Gagal mengirim email: " + err.text || err.message);
+      }
+    }
+
+    loadPendaftar();
+  </script>
+</body>
+</html>
